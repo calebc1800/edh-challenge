@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}My Decks - MTG Commander Builder{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="page-header">
+        <h1>My Decks</h1>
+        <p>Manage your Commander decks</p>
+    </header>
+
+    <div id="deck-list" class="deck-grid">
+        <!-- Populated by JavaScript -->
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    async function loadDecks() {
+        try {
+            const response = await fetch('/api/decks');
+            const data = await response.json();
+
+            const deckList = document.getElementById('deck-list');
+            deckList.innerHTML = '';
+
+            if (data.decks.length === 0) {
+                deckList.innerHTML = '<p class="empty-message">No decks yet. Start the 32 Deck Challenge!</p>';
+                return;
+            }
+
+            for (const deck of data.decks) {
+                const card = document.createElement('div');
+                card.className = 'deck-card';
+
+                // Get commander info
+                const commanderName = deck.commander_name || 'No commander';
+
+                card.innerHTML = `
+                    <h3>${deck.name}</h3>
+                    <div class="deck-info">
+                        <p class="color-identity">
+                            <strong>Colors:</strong> ${deck.color_identity}
+                        </p>
+                        <p class="card-count">
+                            <strong>Cards:</strong> ${deck.card_count}/100
+                        </p>
+                        <p class="commander">
+                            <strong>Commander:</strong> ${commanderName}
+                        </p>
+                    </div>
+                    <div class="deck-actions">
+                        <button class="btn-primary" onclick="viewDeck(${deck.id})">
+                            <span>✏️</span> Edit
+                        </button>
+                        <button class="btn-danger" onclick="deleteDeck(${deck.id}, '${deck.name}')">
+                            <span>🗑️</span> Delete
+                        </button>
+                    </div>
+                `;
+                deckList.appendChild(card);
+            }
+        } catch (error) {
+            console.error('Failed to load decks:', error);
+            document.getElementById('deck-list').innerHTML = 
+                '<p class="error-message">Failed to load decks. Please try again.</p>';
+        }
+    }
+
+    function viewDeck(deckId) {
+        window.location.href = `/deck-builder/${deckId}`;
+    }
+
+    async function deleteDeck(deckId, deckName) {
+        if (!confirm(`Are you sure you want to delete "${deckName}"? This cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/decks/${deckId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                showNotification(`Deleted "${deckName}"`, 'success');
+                loadDecks();
+            } else {
+                showNotification('Failed to delete deck', 'error');
+            }
+        } catch (error) {
+            console.error('Failed to delete deck:', error);
+            showNotification('Failed to delete deck', 'error');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadDecks);
+</script>
+{% endblock %}

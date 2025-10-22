@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}32 Deck Challenge - MTG Commander Builder{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="page-header">
+        <h1>32 Deck Challenge</h1>
+        <p>Build one Commander deck for each color combination</p>
+        <div id="progress-bar" class="progress-bar">
+            <div id="progress-fill" class="progress-fill">0/32</div>
+        </div>
+    </header>
+
+    <div id="challenge-grid" class="challenge-grid">
+        <!-- Grid will be populated by JavaScript -->
+    </div>
+
+    <div id="duplicate-cards" class="warning-box" style="display:none;">
+        <h3>⚠️ Duplicate Cards Found</h3>
+        <ul id="duplicate-list"></ul>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let allDecksData = [];
+    let challengeStatus = null;
+
+    // Load challenge progress
+    async function loadChallengeProgress() {
+        try {
+            // Fetch both progress and status
+            const [progressResponse, statusResponse] = await Promise.all([
+                fetch('/api/challenge/progress'),
+                fetch('/api/challenge/status')
+            ]);
+            
+            const progress = await progressResponse.json();
+            challengeStatus = await statusResponse.json();
+            
+            const grid = document.getElementById('challenge-grid');
+            grid.innerHTML = '';
+            
+            let completed = 0;
+            
+            // Get list of decks with conflicts
+            const conflictingDecks = getConflictingDecks(challengeStatus);
+            
+            for (const [code, info] of Object.entries(progress)) {
+                const card = document.createElement('div');
+                
+                // Determine deck status
+                let statusClass = 'status-uncreated';
+                let statusBadge = '';
+                
+                if (info.completed) {
+                    const hasConflict = conflictingDecks.has(info.deck_id);
+                    const deckData = await getDeckValidation(info.deck_id);
+                    
+                    if (hasConflict) {
+                        statusClass = 'status-conflict';
+                        statusBadge = '<div class="status-badge conflict">⚠ Conflict</div>';
+                    } else if (deckData && deckData.validation && deckData.validation.valid) {
+                        statusClass = 'status-complete';
+                        statusBadge = '<div class="status-badge complete">✓ Complete</div>';
+                        completed++;
+                    } else {
+                        statusClass = 'status-incomplete';
+                        statusBadge = '<div class="status-badge incomplete">⏳ Incomplete</div>';
+                    }
+                }
+                
+                card.className = `color-card ${statusClass}`;
+                card.innerHTML = `
+                    <div class="color-code">${code}</div>
+                    <div class="color-name">${info.name}</div>
+                    ${info.completed ? 
+                        `<div class="deck-name">${info.deck_name}</div>${statusBadge}` : 
+                        '<div class="build-prompt">Click to Build</div>'}
+                `;
+                
+                if (info.completed) {
+                    card.onclick = () => window.location.href = `/deck-builder/${info.deck_id}`;
+                } else {
+                    card.onclick = () => createDeck(code, info.name);
+                }
+                
+                grid.appendChild(card);
+            }
+            
+            // Update progress bar (only count valid, complete decks)
+            const progressFill = document.getElementById('progress-fill');
+            progressFill.textContent = `${completed}/32`;
+            progressFill.style.width = `${(completed / 32) * 100}%`;
+            
+        } catch (error) {
+            console.error('Failed to load challenge progress:', error);
+        }
+        
+        // Load duplicate cards
+        loadDuplicates();
+    }
+    
+    function getConflictingDecks(status) {
+        const conflictingDecks = new Set();
+        
+        if (status && status.duplicate_cards) {
+            for (const [cardName, decks] of Object.entries(status.duplicate_cards)) {
+                decks.forEach(deck => {
+                    conflictingDecks.add(deck.deck_id);
+                });
+            }
+        }
+        
+        return conflictingDecks;
+    }
+    
+    async function getDeckValidation(deckId) {
+        try {
+            const response = await fetch(`/api/decks/${deckId}`);
+            return await response.json();
+        } catch (error) {
+            console.error('Failed to get deck validation:', error);
+            return null;
+        }
+    }
+    
+    async function loadDuplicates() {
+        try {
+            if (!challengeStatus) {
+                const response = await fetch('/api/challenge/status');
+                challengeStatus = await response.json();
+            }
+            
+            if (challengeStatus.duplicate_count > 0) {
+                const duplicateBox = document.getElementById('duplicate-cards');
+                const duplicateList = document.getElementById('duplicate-list');
+                
+                duplicateBox.style.display = 'block';
+                duplicateList.innerHTML = '';
+                
+                for (const [cardName, decks] of Object.entries(challengeStatus.duplicate_cards)) {
+                    const li = document.createElement('li');
+                    const deckNames = decks.map(d => d.deck_name).join(', ');
+                    li.textContent = `${cardName} appears in: ${deckNames}`;
+                    duplicateList.appendChild(li);
+                }
+            }
+        } catch (error) {
+            console.error('Failed to load duplicates:', error);
+        }
+    }
+    
+    async function createDeck(colorCode, colorName) {
+        const deckName = prompt(`Create deck for ${colorName}:`, `${colorName} Commander`);
+        if (!deckName) return;
+        
+        try {
+            const response = await fetch('/api/decks', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    name: deckName,
+                    color_identity: colorCode
+                })
+            });
+            
+            if (response.ok) {
+                const deck = await response.json();
+                window.location.href = `/deck-builder/${deck.id}`;
+            } else {
+                const error = await response.json();
+                alert('Error: ' + error.error);
+            }
+        } catch (error) {
+            console.error('Failed to create deck:', error);
+            alert('Failed to create deck');
+        }
+    }
+    
+    // Load on page load
+    document.addEventListener('DOMContentLoaded', loadChallengeProgress);
+</script>
+{% endblock %}

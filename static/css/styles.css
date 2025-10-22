@@ -1,0 +1,845 @@
+/* MTG Commander Deck Builder - Dark Mode Theme */
+
+:root {
+    /* MTG Colors */
+    --color-white: #f8f5ec;
+    --color-blue: #0e68ab;
+    --color-black: #150b00;
+    --color-red: #d3202a;
+    --color-green: #00733e;
+    --color-gold: #c9aa71;
+    
+    /* Dark Theme Colors */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #242424;
+    --bg-tertiary: #2d2d2d;
+    --bg-elevated: #333333;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-muted: #808080;
+    --border-color: #404040;
+    --border-light: #555555;
+    
+    /* Status Colors */
+    --status-complete: #00733e;
+    --status-incomplete: #f5a623;
+    --status-conflict: #d32f2f;
+    --status-uncreated: #666666;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navbar */
+.navbar {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--color-gold), var(--color-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-menu a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 500;
+}
+
+.nav-menu a:hover {
+    color: var(--color-gold);
+}
+
+/* Page Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.page-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.page-header p {
+    color: var(--text-secondary);
+}
+
+/* Progress Bar */
+.progress-bar {
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    height: 40px;
+    margin: 2rem 0;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--border-color);
+}
+
+.progress-fill {
+    background: linear-gradient(90deg, var(--status-complete), var(--color-blue));
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    transition: width 0.3s;
+}
+
+/* Challenge Grid */
+.challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.color-card {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid var(--border-color);
+}
+
+.color-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+/* Status-based colors for decks */
+.color-card.status-complete {
+    border-color: var(--status-complete);
+    background: linear-gradient(135deg, var(--bg-secondary), rgba(0, 115, 62, 0.15));
+    box-shadow: 0 0 15px rgba(0, 115, 62, 0.2);
+}
+
+.color-card.status-incomplete {
+    border-color: var(--status-incomplete);
+    background: linear-gradient(135deg, var(--bg-secondary), rgba(245, 166, 35, 0.15));
+    box-shadow: 0 0 15px rgba(245, 166, 35, 0.2);
+}
+
+.color-card.status-conflict {
+    border-color: var(--status-conflict);
+    background: linear-gradient(135deg, var(--bg-secondary), rgba(211, 47, 47, 0.15));
+    box-shadow: 0 0 15px rgba(211, 47, 47, 0.2);
+}
+
+.color-card.status-uncreated {
+    border-color: var(--status-uncreated);
+    background: var(--bg-secondary);
+}
+
+.color-code {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.color-name {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.deck-name {
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.color-card.status-complete .deck-name {
+    color: var(--status-complete);
+}
+
+.color-card.status-incomplete .deck-name {
+    color: var(--status-incomplete);
+}
+
+.color-card.status-conflict .deck-name {
+    color: var(--status-conflict);
+}
+
+.build-prompt {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Status indicator badges */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.status-badge.complete {
+    background: rgba(0, 115, 62, 0.2);
+    color: var(--status-complete);
+    border: 1px solid var(--status-complete);
+}
+
+.status-badge.incomplete {
+    background: rgba(245, 166, 35, 0.2);
+    color: var(--status-incomplete);
+    border: 1px solid var(--status-incomplete);
+}
+
+.status-badge.conflict {
+    background: rgba(211, 47, 47, 0.2);
+    color: var(--status-conflict);
+    border: 1px solid var(--status-conflict);
+}
+
+/* Warning Box */
+.warning-box {
+    background: rgba(245, 166, 35, 0.1);
+    border: 2px solid var(--status-incomplete);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.warning-box h3 {
+    color: var(--status-incomplete);
+    margin-bottom: 1rem;
+}
+
+.warning-box ul {
+    list-style-position: inside;
+}
+
+.warning-box li {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+/* Deck Builder Layout */
+.deck-builder {
+    max-width: 1600px;
+}
+
+.deck-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.deck-header h1 {
+    color: var(--text-primary);
+}
+
+.validation-status {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.validation-status.valid {
+    background: rgba(0, 115, 62, 0.2);
+    color: var(--status-complete);
+    border: 1px solid var(--status-complete);
+}
+
+.validation-status.invalid {
+    background: rgba(211, 47, 47, 0.2);
+    color: var(--status-conflict);
+    border: 1px solid var(--status-conflict);
+}
+
+.deck-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.search-panel, .deck-panel {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color);
+}
+
+.search-panel h2, .deck-panel h2 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+#card-search {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+#card-search:focus {
+    outline: none;
+    border-color: var(--color-blue);
+}
+
+.search-results {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar for dark theme */
+.search-results::-webkit-scrollbar,
+.deck-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.search-results::-webkit-scrollbar-track,
+.deck-list::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: 4px;
+}
+
+.search-results::-webkit-scrollbar-thumb,
+.deck-list::-webkit-scrollbar-thumb {
+    background: var(--border-light);
+    border-radius: 4px;
+}
+
+.search-results::-webkit-scrollbar-thumb:hover,
+.deck-list::-webkit-scrollbar-thumb:hover {
+    background: #777;
+}
+
+.card-result {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.card-result:hover {
+    background: var(--bg-tertiary);
+}
+
+.card-result img {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 1rem;
+}
+
+.card-info {
+    flex: 1;
+}
+
+.card-name {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.card-type {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Commander Section */
+.commander-section {
+    margin-bottom: 2rem;
+}
+
+.commander-section h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.commander-slot {
+    background: var(--bg-tertiary);
+    border: 2px dashed var(--color-gold);
+    border-radius: 8px;
+    padding: 1rem;
+    min-height: 100px;
+}
+
+.commander-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.commander-card img {
+    width: 80px;
+    height: 112px;
+    object-fit: cover;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 2px solid var(--color-gold);
+}
+
+.commander-card img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(201, 170, 113, 0.5);
+}
+
+/* Deck List */
+.deck-list-container h3 {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: var(--text-primary);
+}
+
+.deck-list {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.deck-card-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+    background: var(--bg-secondary);
+    transition: background 0.2s;
+}
+
+.deck-card-item:hover {
+    background: var(--bg-tertiary);
+}
+
+.deck-card-item .card-image-thumb {
+    width: 40px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 3px;
+    margin-right: 0.75rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.deck-card-item .card-image-thumb:hover {
+    transform: scale(1.1);
+}
+
+.deck-card-details {
+    flex: 1;
+    cursor: pointer;
+}
+
+.deck-card-quantity {
+    font-weight: bold;
+    color: var(--color-blue);
+    margin-right: 0.5rem;
+}
+
+.deck-card-name {
+    font-weight: bold;
+    position: relative;
+    color: var(--text-primary);
+}
+
+.deck-card-name:hover {
+    color: var(--color-blue);
+}
+
+.deck-card-type {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.deck-card-set {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.deck-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.deck-card-actions button {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: background 0.2s;
+}
+
+.btn-edit {
+    background: var(--color-blue);
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #0a5289;
+}
+
+.btn-remove {
+    background: var(--status-conflict);
+    color: white;
+}
+
+.btn-remove:hover {
+    background: #a01820;
+}
+
+/* Card Hover Preview */
+.card-hover-preview {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    margin-left: 10px;
+    z-index: 1000;
+    pointer-events: none;
+    display: none;
+}
+
+.card-hover-preview img {
+    width: 250px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+    border: 2px solid var(--border-light);
+}
+
+.deck-card-item:hover .card-hover-preview {
+    display: block;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.85);
+}
+
+.modal.active {
+    display: block;
+}
+
+.modal-content {
+    background-color: var(--bg-secondary);
+    margin: 5% auto;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+
+.modal-content h2 {
+    color: var(--text-primary);
+}
+
+.close {
+    color: var(--text-muted);
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 20px;
+}
+
+.close:hover,
+.close:focus {
+    color: var(--text-primary);
+}
+
+/* Print Selection */
+.print-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.print-option {
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    background: var(--bg-tertiary);
+}
+
+.print-option:hover {
+    border-color: var(--color-blue);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(14, 104, 171, 0.3);
+}
+
+.print-option.selected {
+    border-color: var(--status-complete);
+    background: rgba(0, 115, 62, 0.1);
+}
+
+.print-option img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.print-set-info {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Options Form */
+.options-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select {
+    padding: 0.5rem;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--color-blue);
+}
+
+.current-printing {
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.btn-primary {
+    background: var(--color-blue);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #0a5289;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+.btn-danger {
+    background: var(--status-conflict);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #a01820;
+}
+
+/* Deck Grid */
+.deck-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.deck-card {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.2s;
+    border: 1px solid var(--border-color);
+}
+
+.deck-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+}
+
+.deck-card h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+}
+
+.deck-info {
+    margin-bottom: 1rem;
+}
+
+.deck-info p {
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+.deck-info strong {
+    color: var(--text-primary);
+}
+
+.color-identity {
+    color: var(--color-gold);
+    font-weight: bold;
+}
+
+.deck-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.deck-actions button {
+    flex: 1;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background 0.2s;
+}
+
+/* Messages */
+.empty-message,
+.error-message {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+}
+
+.error-message {
+    color: var(--status-conflict);
+}
+
+/* Footer */
+.footer {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 2rem 0;
+    margin-top: 4rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer a {
+    color: var(--color-gold);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .deck-layout {
+        grid-template-columns: 1fr;
+    }
+    
+    .challenge-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .card-hover-preview {
+        display: none !important;
+    }
+}

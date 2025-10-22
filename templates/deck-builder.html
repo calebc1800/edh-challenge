@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Deck Builder - MTG Commander Builder{% endblock %}
+
+{% block content %}
+<div class="container deck-builder">
+    <div class="deck-header">
+        <h1 id="deck-name">Loading...</h1>
+        <div id="validation-status" class="validation-status"></div>
+    </div>
+
+    <div class="deck-layout">
+        <div class="search-panel">
+            <h2>Card Search</h2>
+            <input type="text" id="card-search" placeholder="Search cards (e.g., t:creature c:red)">
+            <div id="search-results" class="search-results"></div>
+        </div>
+
+        <div class="deck-panel">
+            <h2>Decklist (<span id="card-count">0</span>/100)</h2>
+
+            <div id="commander-section" class="commander-section">
+                <h3>Commander</h3>
+                <div id="commander-slot" class="commander-slot">
+                    <p>No commander selected</p>
+                </div>
+            </div>
+
+            <div class="deck-list-container">
+                <h3>Main Deck</h3>
+                <div id="deck-list" class="deck-list"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Card Details Modal -->
+<div id="card-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeCardModal()">&times;</span>
+        <div id="modal-body"></div>
+    </div>
+</div>
+
+<!-- Print Selection Modal -->
+<div id="print-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closePrintModal()">&times;</span>
+        <h2>Select Card Printing</h2>
+        <div id="print-selection"></div>
+    </div>
+</div>
+
+<!-- Card Options Modal -->
+<div id="options-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeOptionsModal()">&times;</span>
+        <h2>Card Options</h2>
+        <div id="options-body"></div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/card-search.js') }}"></script>
+<script src="{{ url_for('static', filename='js/deck-builder.js') }}"></script>
+<script src="{{ url_for('static', filename='js/card-modals.js') }}"></script>
+{% endblock %}
