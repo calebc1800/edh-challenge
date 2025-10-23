@@ -2,15 +2,6 @@
 
 A web-based application for building Magic: The Gathering Commander decks following the 32 deck challenge rules.
 
-## New Features in v1.1
-
-✨ **Print Selection** - Choose specific card printings/art versions for each card in your deck
-✨ **Quantity Control** - Set card quantities when adding or edit them later
-✨ **Card Image Hover** - Hover over card names to see card images
-✨ **Image Thumbnails** - View card images directly in the decklist
-✨ **Enhanced Card Options** - Edit quantity and print selection for cards already in your deck
-✨ **Commander Display Fix** - Commanders now display correctly on the My Decks page
-
 ## Challenge Rules
 
 - Create one deck for each of the 32 color combinations (including colorless)
@@ -86,8 +77,8 @@ http://localhost:5000
 2. **Add Cards to Your Deck**
    - Use the search bar to find cards
    - Click on a card to add it
-   - **NEW**: Select which printing/art version you want
-   - **NEW**: Choose the quantity (for basic lands)
+   - Select which printing/art version you want
+   - Choose the quantity (for basic lands)
    - Confirm your selection
 
 3. **Set Your Commander**
@@ -190,7 +181,11 @@ Ensure you have an active internet connection. Images are loaded from Scryfall's
 
 ## Changelog
 
-### v1.1 (Latest)
+### v1.2
+- ✨ Added light and dark mode toggle
+- ✨ Added challenge rule page for quick reference
+
+### v1.1
 - ✨ Added print/art version selection for each card
 - ✨ Added quantity control when adding cards
 - ✨ Added ability to edit card quantity and printing after adding
@@ -216,5 +211,5 @@ This project is for personal use. Magic: The Gathering is © Wizards of the Coas
 
 ---
 
-**Version**: 1.1.0  
+**Version**: 1.2 
 **Last Updated**: October 2025
