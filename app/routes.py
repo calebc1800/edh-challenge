@@ -32,6 +32,11 @@ def deck_list():
     """List all decks."""
     return render_template('deck-list.html')
 
+@main_bp.route('/challenge-rules')
+def challenge_rules():
+    """Challenge rules page."""
+    return render_template('challenge-rules.html')
+
 # ============================================================================
 # API ROUTES - Cards
 # ============================================================================

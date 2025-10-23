@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+{% block title %}Challenge Rules - MTG Commander Builder{% endblock %}
+
+{% block content %}
+<div class="container">
+    <header class="page-header">
+        <h1>🎯 The 32 Deck Challenge</h1>
+        <p>Build one Commander deck for every possible color combination</p>
+    </header>
+
+    <div class="rules-content">
+        <section class="rules-section">
+            <h2>📜 Challenge Overview</h2>
+            <p>The 32 Deck Challenge is a popular Magic: The Gathering deckbuilding goal where players create one Commander deck for each of the 32 possible color combinations. This includes all mono-colored decks, two-color pairs, three-color combinations, four-color combinations, five-color, and colorless.</p>
+        </section>
+
+        <section class="rules-section">
+            <h2>🎨 Color Combinations (32 Total)</h2>
+            <div class="color-breakdown">
+                <div class="color-group">
+                    <h3>Mono-Color (6)</h3>
+                    <ul>
+                        <li><span class="color-dot white"></span> White</li>
+                        <li><span class="color-dot blue"></span> Blue</li>
+                        <li><span class="color-dot black"></span> Black</li>
+                        <li><span class="color-dot red"></span> Red</li>
+                        <li><span class="color-dot green"></span> Green</li>
+                        <li><span class="color-dot colorless"></span> Colorless</li>
+                    </ul>
+                </div>
+
+                <div class="color-group">
+                    <h3>Two-Color (10)</h3>
+                    <ul>
+                        <li>Azorius (WU)</li>
+                        <li>Orzhov (WB)</li>
+                        <li>Boros (WR)</li>
+                        <li>Selesnya (WG)</li>
+                        <li>Dimir (UB)</li>
+                        <li>Izzet (UR)</li>
+                        <li>Simic (UG)</li>
+                        <li>Rakdos (BR)</li>
+                        <li>Golgari (BG)</li>
+                        <li>Gruul (RG)</li>
+                    </ul>
+                </div>
+
+                <div class="color-group">
+                    <h3>Three-Color (10)</h3>
+                    <ul>
+                        <li>Esper (WUB)</li>
+                        <li>Jeskai (WUR)</li>
+                        <li>Bant (WUG)</li>
+                        <li>Mardu (WBR)</li>
+                        <li>Abzan (WBG)</li>
+                        <li>Naya (WRG)</li>
+                        <li>Grixis (UBR)</li>
+                        <li>Sultai (UBG)</li>
+                        <li>Temur (URG)</li>
+                        <li>Jund (BRG)</li>
+                    </ul>
+                </div>
+
+                <div class="color-group">
+                    <h3>Four-Color (5)</h3>
+                    <ul>
+                        <li>No Green (WUBR)</li>
+                        <li>No Red (WUBG)</li>
+                        <li>No Black (WURG)</li>
+                        <li>No Blue (WBRG)</li>
+                        <li>No White (UBRG)</li>
+                    </ul>
+                </div>
+
+                <div class="color-group">
+                    <h3>Five-Color (1)</h3>
+                    <ul>
+                        <li>Five-Color (WUBRG)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="rules-section">
+            <h2>⚖️ Challenge Rules</h2>
+            <ol class="main-rules">
+                <li>
+                    <strong>One Deck Per Color Combination</strong>
+                    <p>You must build exactly one deck for each of the 32 color combinations.</p>
+                </li>
+                <li>
+                    <strong>No Card Duplication (Except Basic Lands)</strong>
+                    <p>Each non-basic land card can only appear in ONE deck across your entire collection. Basic lands (Plains, Island, Swamp, Mountain, Forest, Wastes, and snow-covered versions) are exempt and can be used in multiple decks.</p>
+                </li>
+                <li>
+                    <strong>Standard Commander Format Rules Apply</strong>
+                    <p>All decks must follow the official Commander format rules:</p>
+                    <ul>
+                        <li>Exactly 100 cards (including your commander)</li>
+                        <li>One legendary creature or planeswalker as commander</li>
+                        <li>Singleton format (only one copy of each card, except basic lands)</li>
+                        <li>Cards must match commander's color identity</li>
+                        <li>No banned cards</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Color Identity Restriction</strong>
+                    <p>All cards in a deck must match the color identity of the commander. A card's color identity includes all mana symbols in its mana cost and rules text.</p>
+                </li>
+            </ol>
+        </section>
+
+        <section class="rules-section">
+            <h2>🎮 How to Complete the Challenge</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Choose Your First Color Combination</h3>
+                        <p>Start with a color combination you're familiar with or excited about.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Select a Commander</h3>
+                        <p>Pick a legendary creature that matches your chosen color identity.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Build Your 100-Card Deck</h3>
+                        <p>Add 99 cards that support your commander's strategy and match its color identity.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Track Card Usage</h3>
+                        <p>Remember: each non-basic land card can only be used once across all 32 decks!</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Repeat for All 32 Combinations</h3>
+                        <p>Continue until you've completed a legal deck for every color combination.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="rules-section">
+            <h2>💡 Tips & Strategies</h2>
+            <ul class="tips-list">
+                <li><strong>Plan ahead:</strong> Think about which cards work in multiple color combinations and allocate them strategically.</li>
+                <li><strong>Budget wisely:</strong> You'll need 3,200+ unique cards total. Consider budget alternatives.</li>
+                <li><strong>Theme diversity:</strong> Try different strategies (aggro, control, combo, tribal) across your decks to keep things interesting.</li>
+                <li><strong>Track progress:</strong> Use this app's visual grid to see which combinations you've completed and which need work.</li>
+            </ul>
+        </section>
+
+        <section class="rules-section">
+            <h2>🚫 Common Mistakes to Avoid</h2>
+            <ul class="tips-list">
+                <li>Using the same powerful non-basic land (like Command Tower) in multiple decks</li>
+                <li>Building all your favorite commanders first and running out of good cards for the rest</li>
+            </ul>
+        </section>
+
+        <section class="rules-section">
+            <h2>📊 Challenge Completion</h2>
+            <p>The challenge is considered complete when:</p>
+            <ul class="tips-list">
+                <li>✅ You have exactly 32 decks (one per color combination)</li>
+                <li>✅ Each deck is exactly 100 cards</li>
+                <li>✅ Each deck has a legal commander</li>
+                <li>✅ All decks follow singleton rules</li>
+                <li>✅ No card conflicts exist between decks (except basic lands)</li>
+                <li>✅ All cards match their commander's color identity</li>
+                <li>✅ No banned cards are included</li>
+            </ul>
+        </section>
+
+        <section class="rules-section">
+            <h2>🔗 Additional Resources</h2>
+            <ul class="tips-list">
+                <li><a href="https://mtgcommander.net/" target="_blank">Official Commander Rules Committee</a></li>
+                <li><a href="https://scryfall.com/" target="_blank">Scryfall - Card Search</a></li>
+                <li><a href="https://edhrec.com/" target="_blank">EDHREC - Commander Deck Resources</a></li>
+            </ul>
+        </section>
+
+        <div class="cta-section">
+            <h2>Ready to Start?</h2>
+            <p>Head back to the challenge grid and build your first deck!</p>
+            <a href="/" class="btn-primary">Go to Challenge Grid</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
