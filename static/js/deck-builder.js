@@ -21,6 +21,7 @@ async function loadDeck() {
     try {
         currentDeck = await API.get(`/decks/${deckId}`);
         displayDeck();
+        initDeckNameEditor();
     } catch (error) {
         console.error('Failed to load deck:', error);
         showNotification('Failed to load deck', 'error');
@@ -189,6 +190,100 @@ async function updateDeckCard(cardId, updates) {
         console.error('Failed to update card:', error);
         showNotification('Failed to update card', 'error');
     }
+}
+
+// Deck name editing functionality
+function initDeckNameEditor() {
+    const editBtn = document.getElementById('edit-name-btn');
+    const deckNameEl = document.getElementById('deck-name');
+    
+    if (editBtn && deckNameEl) {
+        editBtn.addEventListener('click', showDeckNameEditor);
+        
+        // Also allow double-click on name to edit
+        deckNameEl.addEventListener('dblclick', showDeckNameEditor);
+    }
+}
+
+function showDeckNameEditor() {
+    if (!currentDeck) return;
+    
+    const deckNameEl = document.getElementById('deck-name');
+    const currentName = currentDeck.name;
+    
+    // Create input field
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = currentName;
+    input.className = 'deck-name-input';
+    input.maxLength = 100;
+    
+    // Replace title with input
+    deckNameEl.replaceWith(input);
+    input.focus();
+    input.select();
+    
+    // Handle save
+    async function saveName() {
+        const newName = input.value.trim();
+        
+        if (!newName) {
+            showNotification('Deck name cannot be empty', 'error');
+            input.focus();
+            return;
+        }
+        
+        if (newName === currentName) {
+            cancelEdit();
+            return;
+        }
+        
+        try {
+            await API.put(`/decks/${deckId}`, { name: newName });
+            
+            // Update the display
+            const newTitle = document.createElement('h1');
+            newTitle.id = 'deck-name';
+            newTitle.className = 'editable-title';
+            newTitle.textContent = newName;
+            newTitle.addEventListener('dblclick', showDeckNameEditor);
+            input.replaceWith(newTitle);
+            
+            // Update currentDeck object
+            currentDeck.name = newName;
+            
+            showNotification('Deck name updated', 'success');
+        } catch (error) {
+            console.error('Failed to update deck name:', error);
+            showNotification('Failed to update deck name', 'error');
+            input.focus();
+        }
+    }
+    
+    function cancelEdit() {
+        const title = document.createElement('h1');
+        title.id = 'deck-name';
+        title.className = 'editable-title';
+        title.textContent = currentName;
+        title.addEventListener('dblclick', showDeckNameEditor);
+        input.replaceWith(title);
+    }
+    
+    // Save on Enter
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            saveName();
+        } else if (e.key === 'Escape') {
+            e.preventDefault();
+            cancelEdit();
+        }
+    });
+    
+    // Save on blur (clicking outside)
+    input.addEventListener('blur', () => {
+        setTimeout(saveName, 100);
+    });
 }
 
 // Initialize deck builder

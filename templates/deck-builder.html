@@ -5,7 +5,12 @@
 {% block content %}
 <div class="container deck-builder">
     <div class="deck-header">
-        <h1 id="deck-name">Loading...</h1>
+        <div class="deck-title-section">
+            <h1 id="deck-name" class="editable-title">Loading...</h1>
+            <button id="edit-name-btn" class="btn-edit-title" title="Edit deck name">
+                ✏️
+            </button>
+        </div>
         <div id="validation-status" class="validation-status"></div>
     </div>
 

@@ -51,10 +51,13 @@
                         </p>
                     </div>
                     <div class="deck-actions">
-                        <button class="btn-primary" onclick="viewDeck(${deck.id})">
-                            <span>✏️</span> Edit
+                        <button class="btn-secondary" onclick="editDeckName(${deck.id}, '${deck.name.replace(/'/g, "\\'")}')">
+                            <span>✏️</span> Rename
                         </button>
-                        <button class="btn-danger" onclick="deleteDeck(${deck.id}, '${deck.name}')">
+                        <button class="btn-primary" onclick="viewDeck(${deck.id})">
+                            <span>📝</span> Edit
+                        </button>
+                        <button class="btn-danger" onclick="deleteDeck(${deck.id}, '${deck.name.replace(/'/g, "\\'")}')">
                             <span>🗑️</span> Delete
                         </button>
                     </div>
@@ -91,6 +94,36 @@
         } catch (error) {
             console.error('Failed to delete deck:', error);
             showNotification('Failed to delete deck', 'error');
+        }
+    }
+
+    async function editDeckName(deckId, currentName) {
+        const newName = prompt('Enter new deck name:', currentName);
+        
+        if (!newName || newName.trim() === '') {
+            return;
+        }
+        
+        if (newName === currentName) {
+            return;
+        }
+        
+        try {
+            const response = await fetch(`/api/decks/${deckId}`, {
+                method: 'PUT',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ name: newName.trim() })
+            });
+            
+            if (response.ok) {
+                showNotification(`Renamed to "${newName}"`, 'success');
+                loadDecks(); // Reload the deck list
+            } else {
+                showNotification('Failed to rename deck', 'error');
+            }
+        } catch (error) {
+            console.error('Failed to rename deck:', error);
+            showNotification('Failed to rename deck', 'error');
         }
     }
 
